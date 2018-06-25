@@ -1,8 +1,10 @@
+import Entities.FoodItem
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.{ContentTypes, HttpEntity}
 import akka.stream.ActorMaterializer
 import akka.http.scaladsl.server.Directives._
+import slick.lifted.TableQuery
 
 import scala.io.StdIn
 
@@ -25,4 +27,12 @@ object MainController extends App {
   bindingFuture
     .flatMap(_.unbind())
     .onComplete(_ => system.terminate())
+
+  val testFoods = Seq(
+    FoodItem("Omuraysu"),
+    FoodItem("Hamburger"),
+    FoodItem("Nuggets")
+  )
+
+  lazy val foodSelect = TableQuery[FoodTable]
 }
