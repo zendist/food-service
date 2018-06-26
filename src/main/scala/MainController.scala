@@ -19,7 +19,7 @@ object MainController extends App {
     } ~
     path("menu") {
       get {
-        complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, Persistence.menu))
+        complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, PersistenceModule.menu))
       }
     }
 
