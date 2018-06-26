@@ -5,5 +5,5 @@ final class FoodTable(tag:Tag) extends Table[FoodItem](tag,"food_item"){
   def id = column[Long]("id",O.PrimaryKey,O.AutoInc)
   def name = column[String]("name")
 
-  def * = (id,name).mapTo[FoodItem]
+  def * = (name,id).mapTo[FoodItem]
 }
