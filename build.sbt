@@ -10,6 +10,8 @@ libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-http" % "10.1.3",
   "com.typesafe.akka" %% "akka-http-testkit" % "10.1.3" % Test,
 
+  "com.typesafe.akka" %% "akka-http-spray-json" % "10.1.3",
+
   "com.h2database" % "h2" % "1.4.185",
   "com.typesafe.slick" %% "slick" % "3.2.3"
 )

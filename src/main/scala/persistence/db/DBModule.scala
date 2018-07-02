@@ -1,10 +1,12 @@
-import persistence._
+package persistence.db
+
+import persistence.data.FoodDAO.{FoodItem, foods}
 import slick.jdbc.JdbcProfile
 
-import scala.concurrent.duration._
 import scala.concurrent.Await
+import scala.concurrent.duration._
 
-trait PersistenceModule {
+trait DBModule {
 
   val profile:JdbcProfile
 
@@ -23,6 +25,4 @@ trait PersistenceModule {
   exec(foods.schema.create >>
     (foods ++= testFoods)
   )
-
-  val menu = exec(foods.result).map(_.name).mkString(""," | ","")
 }
