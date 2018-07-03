@@ -1,8 +1,9 @@
 import akka.http.scaladsl.model.{ContentTypes, HttpEntity}
 import akka.http.scaladsl.server.Directives._
-import persistence.data.{FoodDAO, PersonDAO}
+import persistence.db.data.{FoodDAO, PersonDAO}
 
 package object http {
+  import JsonConverter._
   val routes =
     path("hello") {
       get {
@@ -11,12 +12,12 @@ package object http {
     } ~
     path("customers"){
       get {
-        complete(HttpEntity(ContentTypes.`application/json`, PersonDAO.nameList))
+        complete(PersonDAO.getAll())
       }
     } ~
     path("menu") {
       get {
-        complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, FoodDAO.menu))
+        complete(FoodDAO.getAll())
       }
     }
 }
