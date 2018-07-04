@@ -17,3 +17,11 @@ libraryDependencies ++= Seq(
 )
 
 enablePlugins(JavaAppPackaging)
+
+import com.permutive.sbtliquibase.SbtLiquibase
+
+enablePlugins(SbtLiquibase)
+liquibaseUsername := "postgres"
+liquibasePassword := "mysecretpassword"
+liquibaseDriver   := "org.postgresql.jdbc.Driver"
+liquibaseUrl      := "jdbc:postgresql:foodBase?createDatabaseIfNotExist=true"
