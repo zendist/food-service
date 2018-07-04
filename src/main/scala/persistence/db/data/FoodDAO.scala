@@ -1,6 +1,6 @@
 package persistence.db.data
 
-import persistence.db.connection.{DBModule, H2DBModule}
+import persistence.db.connection.{DBModule, H2DBModule, PostgresDBModule}
 
 import scala.concurrent.Future
 
@@ -39,6 +39,6 @@ private[data] trait FoodTable extends PersonTable { this:DBModule =>
   protected def foodTableAutoInc = foodTableQuery returning foodTableQuery.map(_.id)
 
 }
-object FoodDAO extends FoodDAO with H2DBModule
+object FoodDAO extends FoodDAO with PostgresDBModule //H2DBModule
 
 final case class FoodItem(name:String, personId:Long, id:Option[Long] = None)

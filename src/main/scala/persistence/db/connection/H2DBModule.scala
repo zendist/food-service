@@ -9,5 +9,5 @@ trait H2DBModule extends DBModule {
 private object H2DB {
   import slick.jdbc.H2Profile.api._
 
-  val connectionPool = Database.forConfig("foodBase")
+  val connectionPool = Database.forConfig("h2FoodBase")
 }
