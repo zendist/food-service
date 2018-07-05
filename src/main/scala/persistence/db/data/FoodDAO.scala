@@ -26,7 +26,7 @@ private[data] trait FoodTable extends PersonTable { this:DBModule =>
   class FoodTable(tag:Tag) extends Table[FoodItem](tag,"food_item") {
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
 
-    def personId = column[Long]("person")
+    def personId = column[Long]("person_id")
 
     def name = column[String]("name")
 
