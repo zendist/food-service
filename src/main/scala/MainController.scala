@@ -3,7 +3,6 @@ import akka.http.scaladsl.Http
 import akka.stream.ActorMaterializer
 import com.typesafe.config.{Config, ConfigFactory}
 
-import scala.io.StdIn
 import http.routes
 
 object MainController extends App {
@@ -15,5 +14,5 @@ object MainController extends App {
 
   println(conf.getInt("http.port"))
 
-  val bindingFuture = Http().bindAndHandle(routes, "localhost", conf.getInt("http.port"))
+  val bindingFuture = Http().bindAndHandle(routes, "0.0.0.0", conf.getInt("http.port"))
 }
