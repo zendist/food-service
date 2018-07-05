@@ -1,9 +1,9 @@
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.stream.ActorMaterializer
+import com.typesafe.config.{Config, ConfigFactory}
 
 import scala.io.StdIn
-
 import http.routes
 
 object MainController extends App {
@@ -11,5 +11,9 @@ object MainController extends App {
   implicit val materializer = ActorMaterializer()
   implicit val executionContext = system.dispatcher
 
-  val bindingFuture = Http().bindAndHandle(routes, "localhost", 8080)
+  val conf = ConfigFactory.load()
+
+  println(conf.getInt("http.port"))
+
+  val bindingFuture = Http().bindAndHandle(routes, "localhost", conf.getInt("http.port"))
 }
