@@ -1,4 +1,4 @@
-package persistence.db.connection
+package persistence
 
 import slick.jdbc.JdbcProfile
 

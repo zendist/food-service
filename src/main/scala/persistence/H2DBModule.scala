@@ -1,4 +1,4 @@
-package persistence.db.connection
+package persistence
 
 trait H2DBModule extends DBModule {
   override val profile = slick.jdbc.H2Profile

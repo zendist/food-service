@@ -1,4 +1,4 @@
-package persistence.db.connection
+package persistence
 
 trait PostgresDBModule extends DBModule {
   override val profile = slick.jdbc.PostgresProfile
