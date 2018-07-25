@@ -2,6 +2,7 @@ import akka.http.scaladsl.model.{ContentTypes, HttpEntity}
 import akka.http.scaladsl.server.Directives._
 import domain.customers.CustomerDao
 import domain.fooditems.FoodDao
+import domain.orders.OrdersDao
 
 package object http {
   import JsonConverter._
@@ -15,6 +16,12 @@ package object http {
     path("menu") {
       get {
         complete(FoodDao.getAll())
+      }
+    }
+  val orderRoutes =
+    path("order") {
+      get {
+        complete(OrdersDao.getAll())
       }
     }
   val routes =
