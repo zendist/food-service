@@ -18,7 +18,7 @@ trait FoodDao extends FoodPersistence{ this:DBModule =>
   def delete(id: Long): Future[Long] = db.run(foodTableQuery.filter(_.id === id).delete).mapTo[Long]
 }
 
-private[data] trait FoodPersistence { this:DBModule =>
+private[domain] trait FoodPersistence { this:DBModule =>
 
   private class FoodTable(tag:Tag) extends Table[FoodItem](tag,"food_item") {
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)

@@ -8,35 +8,35 @@ import scala.concurrent.Future
 trait CustomerDao extends CustomerPersistence {
   this: DBModule =>
 
-  def create(person: Customer): Future[Long] = db.run(personTableAutoInc += person)
+  def create(customer: Customer): Future[Long] = db.run(customerTableAutoInc += customer)
 
-  def update(person: Customer) = db.run(personTableQuery.filter(_.id === person.id.get).update(person)).mapTo[Long]
+  def update(customer: Customer) = db.run(customerTableQuery.filter(_.id === customer.id.get).update(customer)).mapTo[Long]
 
-  def getById(id: Long) = db.run(personTableQuery.filter(_.id === id).result.headOption)
+  def getById(id: Long) = db.run(customerTableQuery.filter(_.id === id).result.headOption)
 
-  def getAll() = db.run(personTableQuery.to[List].result)
+  def getAll() = db.run(customerTableQuery.to[List].result)
 
-  def delete(id: Long) = db.run(personTableQuery.filter(_.id === id).delete).mapTo[Long]
+  def delete(id: Long) = db.run(customerTableQuery.filter(_.id === id).delete).mapTo[Long]
 
 }
 
-private[data] trait CustomerPersistence {
+private[domain] trait CustomerPersistence {
   this: DBModule =>
 
-  class PersonTable(tag: Tag) extends Table[Customer](tag, "customer") {
+  class CustomerTable(tag: Tag) extends Table[Customer](tag, "customer") {
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
 
     def name = column[String]("name")
 
     def balance = column[Double]("balance")
 
-    def * = (name, balance, id.?) <> (Customer.tupled, Customer.unapply)
+    def * = (name, balance, id) <> (Customer.tupled, Customer.unapply)
   }
 
-  protected val personTableQuery = TableQuery[PersonTable]
+  protected val customerTableQuery = TableQuery[CustomerTable]
 
-  protected def personTableAutoInc = personTableQuery returning personTableQuery.map(_.id)
+  protected def customerTableAutoInc = customerTableQuery returning customerTableQuery.map(_.id)
 }
 
 object CustomerDao extends CustomerDao with PostgresDBModule //H2DBModule
-final case class Customer(name: String, balance: Double, id: Option[Long] = None)
+final case class Customer(name: String, balance: Double, id: Long = 0)
