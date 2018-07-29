@@ -9,5 +9,5 @@ import spray.json.DefaultJsonProtocol
 object JsonConverter extends SprayJsonSupport with DefaultJsonProtocol {
   implicit val foodFormat = jsonFormat2(FoodItem)
   implicit val personFormat = jsonFormat3(Customer)
-  implicit val orderFormat = jsonFormat2(Order)
+  implicit val orderFormat = jsonFormat4(Order)
 }

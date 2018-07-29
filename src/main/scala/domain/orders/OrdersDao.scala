@@ -11,39 +11,38 @@ import scala.concurrent.Future
 
 trait OrdersDao extends OrdersPersistence{ this:DBModule =>
 
-  def create(order: Order):Future[Long] = db.run(orderTableQuery += order).mapTo[Long]
+  def create(order: Order):Future[Int] = db.run(orderTableQuery += order)
 
-  def update(order: Order):Future[Long] = db.run(orderTableQuery.filter(o =>
+  def update(order: Order):Future[Int] = db.run(orderTableQuery.filter(o =>
     o.created === order.created &&
       o.foodItemId === order.foodItemId &&
       o.customerId === order.customerId)
     .update(order))
-    .mapTo[Long]
 
   def findByDate(date:Date):Future[Option[Order]] = db.run(orderTableQuery.filter(_.created === date).result.headOption)
 
-  def getAll(): Future[List[Order]] = db.run(orderTableQuery.to[List].result)
+  def getAll():Future[List[Order]] = db.run(orderTableQuery.to[List].result)
 
-  def delete(order: Order): Future[Long] = db.run(orderTableQuery.filter(o =>
+  def delete(order: Order): Future[Int] = db.run(orderTableQuery.filter(o =>
     o.customerId === order.customerId &&
       o.foodItemId === order.foodItemId &&
       o.created === order.created)
     .delete)
-    .mapTo[Long]
 }
 
-private trait OrdersPersistence extends CustomerPersistence with FoodPersistence { this:DBModule =>
+private[domain] trait OrdersPersistence extends CustomerPersistence with FoodPersistence { this:DBModule =>
 
   private class OrderTable(tag:Tag) extends Table[Order](tag,"orders") {
-    def sum = column[Double]("sum")
 
     def created = column[Date]("created")
 
-    def customerId = column[Long]("customer_id")
+    def foodItemQty = column[Int]("food_item_qty")
 
-    def foodItemId = column[Long]("food_item_id")
+    def customerId = column[Int]("customer_id")
 
-    def * = (sum, created, customerId, foodItemId) <> (Order.tupled, Order.unapply)
+    def foodItemId = column[Int]("food_item_id")
+
+    def * = (foodItemQty, created, customerId, foodItemId) <> (Order.tupled, Order.unapply)
 
     def customer_fk = foreignKey("customer_fk", customerId, customerTableQuery)(_.id)
 
@@ -56,4 +55,4 @@ private trait OrdersPersistence extends CustomerPersistence with FoodPersistence
 }
 object OrdersDao extends OrdersDao with PostgresDBModule //H2DBModule
 
-final case class Order(sum:Double, created: Date, customerId:Long, foodItemId:Long)
+final case class Order(foodItemQty:Int, created: Date, customerId:Int, foodItemId:Int)
