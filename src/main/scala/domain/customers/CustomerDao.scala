@@ -3,10 +3,9 @@ package domain.customers
 import persistence.{DBModule, PostgresDBModule}
 import slick.jdbc.PostgresProfile.api._
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
-trait CustomerDao extends CustomerPersistence {
-  this: DBModule =>
+class CustomerDao(implicit ex: ExecutionContext) extends CustomerPersistence with PostgresDBModule{
 
   def create(customer:Customer): Future[Int] = db.run(customerTableAutoInc += customer)
 
@@ -37,6 +36,3 @@ private[domain] trait CustomerPersistence {
 
   protected def customerTableAutoInc = customerTableQuery returning customerTableQuery.map(_.id)
 }
-
-object CustomerDao extends CustomerDao with PostgresDBModule //H2DBModule
-final case class Customer(name: String, balance: Int, id: Int = 0)

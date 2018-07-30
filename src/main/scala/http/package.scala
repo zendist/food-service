@@ -5,13 +5,6 @@ import domain.fooditems.FoodDao
 import domain.orders.OrdersDao
 
 package object http {
-  import JsonConverter._
-  val customerRoutes =
-    path("customers"){
-      get {
-        complete(CustomerDao.getAll())
-      }
-    }
   val foodRoutes =
     path("menu") {
       get {
