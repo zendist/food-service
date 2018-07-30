@@ -17,14 +17,14 @@ CREATE TABLE IF NOT EXISTS orders (
     food_item_id INTEGER REFERENCES food_items(id) NOT NULL,
     PRIMARY KEY (created, customer_id, food_item_id));
 
-INSERT INTO food_items VALUES
-    ("Гамбургер"),
-    ("Рис с овощами"),
-    ("Куриная отбивная"),
-    ("Пирожки с картошкой");
+INSERT INTO food_items (name, price) VALUES
+    ('Гамбургер', 500),
+    ('Рис с овощами', 350),
+    ('Куриная отбивная', 370),
+    ('Пирожки с картошкой', 150);
 
-INSERT INTO customers VALUES
-    ("John Galt", 5000),
-    ("Jenny Fisher", 10000),
-    ("Daniel Ming", 200),
-    ("Vince Hong", 4000);
+INSERT INTO customers (name, balance) VALUES
+    ('John Galt', 5000),
+    ('Jenny Fisher', 10000),
+    ('Daniel Ming', 200),
+    ('Vince Hong', 4000);
