@@ -27,7 +27,7 @@ trait FoodPersistence { this:DBModule =>
 
     def name = column[String]("name")
 
-    def * = (name, id) <> (FoodItem.tupled, FoodItem.unapply)
+    def * = (name, price, id) <> (FoodItem.tupled, FoodItem.unapply)
   }
   val foodTableQuery = TableQuery[FoodTable]
 
@@ -35,4 +35,4 @@ trait FoodPersistence { this:DBModule =>
 
 }
 
-final case class FoodItem(name:String, id:Int = 0)
+final case class FoodItem(name:String, price:Int, id:Int = 0)
