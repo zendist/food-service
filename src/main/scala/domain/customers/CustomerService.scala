@@ -1,19 +1,19 @@
 package domain.customers
 
-class CustomerService(customerDao:CustomerDao) {
+object CustomerService {
   def getList() = {
-    customerDao.getAll()
+    CustomerDao.getAll()
   }
   def getBy(id:Int) = {
-    customerDao.getById(id)
+    CustomerDao.getById(id)
   }
   def add(customer: Customer) ={
-    customerDao.create(customer)
+    CustomerDao.create(customer)
   }
   def update(customer: Customer) = {
-    customerDao.update(customer)
+    CustomerDao.update(customer)
   }
   def removeBy(id:Int) = {
-    customerDao.delete(id)
+    CustomerDao.delete(id)
   }
 }

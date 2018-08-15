@@ -5,7 +5,7 @@ import slick.jdbc.PostgresProfile.api._
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class FoodDao(implicit ex:ExecutionContext) extends FoodPersistence with PostgresDBModule {
+object FoodDao extends FoodPersistence with PostgresDBModule {
 
   def create(foodItem: FoodItem):Future[Int] = db.run(foodTableAutoInc += foodItem)
 
@@ -18,9 +18,9 @@ class FoodDao(implicit ex:ExecutionContext) extends FoodPersistence with Postgre
   def delete(id: Int):Future[Int] = db.run(foodTableQuery.filter(_.id === id).delete)
 }
 
-private[domain] trait FoodPersistence { this:DBModule =>
+trait FoodPersistence { this:DBModule =>
 
-  private class FoodTable(tag:Tag) extends Table[FoodItem](tag,"food_item") {
+  class FoodTable(tag:Tag) extends Table[FoodItem](tag,"food_item") {
     def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
 
     def price = column[Int]("price")
@@ -29,9 +29,9 @@ private[domain] trait FoodPersistence { this:DBModule =>
 
     def * = (name, id) <> (FoodItem.tupled, FoodItem.unapply)
   }
-  protected val foodTableQuery = TableQuery[FoodTable]
+  val foodTableQuery = TableQuery[FoodTable]
 
-  protected def foodTableAutoInc = foodTableQuery returning foodTableQuery.map(_.id)
+  def foodTableAutoInc = foodTableQuery returning foodTableQuery.map(_.id)
 
 }
 
