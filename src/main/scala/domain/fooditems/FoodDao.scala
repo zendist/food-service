@@ -3,9 +3,9 @@ package domain.fooditems
 import persistence.{DBModule, PostgresDBModule}
 import slick.jdbc.PostgresProfile.api._
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
-trait FoodDao extends FoodPersistence{ this:DBModule =>
+object FoodDao extends FoodPersistence with PostgresDBModule {
 
   def create(foodItem: FoodItem):Future[Int] = db.run(foodTableAutoInc += foodItem)
 
@@ -18,9 +18,9 @@ trait FoodDao extends FoodPersistence{ this:DBModule =>
   def delete(id: Int):Future[Int] = db.run(foodTableQuery.filter(_.id === id).delete)
 }
 
-private[domain] trait FoodPersistence { this:DBModule =>
+trait FoodPersistence { this:DBModule =>
 
-  private class FoodTable(tag:Tag) extends Table[FoodItem](tag,"food_item") {
+  class FoodTable(tag:Tag) extends Table[FoodItem](tag,"food_item") {
     def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
 
     def price = column[Int]("price")
@@ -29,11 +29,10 @@ private[domain] trait FoodPersistence { this:DBModule =>
 
     def * = (name, id) <> (FoodItem.tupled, FoodItem.unapply)
   }
-  protected val foodTableQuery = TableQuery[FoodTable]
+  val foodTableQuery = TableQuery[FoodTable]
 
-  protected def foodTableAutoInc = foodTableQuery returning foodTableQuery.map(_.id)
+  def foodTableAutoInc = foodTableQuery returning foodTableQuery.map(_.id)
 
 }
-object FoodDao extends FoodDao with PostgresDBModule //H2DBModule
 
 final case class FoodItem(name:String, id:Int = 0)

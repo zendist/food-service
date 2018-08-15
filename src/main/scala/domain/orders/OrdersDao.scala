@@ -9,19 +9,19 @@ import slick.jdbc.PostgresProfile.api._
 
 import scala.concurrent.Future
 
-trait OrdersDao extends OrdersPersistence{ this:DBModule =>
+object OrdersDao extends OrdersPersistence with PostgresDBModule {
 
-  def create(order: Order):Future[Int] = db.run(orderTableQuery += order)
+  def create(order: Order): Future[Int] = db.run(orderTableQuery += order)
 
-  def update(order: Order):Future[Int] = db.run(orderTableQuery.filter(o =>
+  def update(order: Order): Future[Int] = db.run(orderTableQuery.filter(o =>
     o.created === order.created &&
       o.foodItemId === order.foodItemId &&
       o.customerId === order.customerId)
     .update(order))
 
-  def findByDate(date:Date):Future[Option[Order]] = db.run(orderTableQuery.filter(_.created === date).result.headOption)
+  def findByDate(date: Date): Future[Option[Order]] = db.run(orderTableQuery.filter(_.created === date).result.headOption)
 
-  def getAll():Future[List[Order]] = db.run(orderTableQuery.to[List].result)
+  def getAll(): Future[List[Order]] = db.run(orderTableQuery.to[List].result)
 
   def delete(order: Order): Future[Int] = db.run(orderTableQuery.filter(o =>
     o.customerId === order.customerId &&
@@ -30,9 +30,10 @@ trait OrdersDao extends OrdersPersistence{ this:DBModule =>
     .delete)
 }
 
-private[domain] trait OrdersPersistence extends CustomerPersistence with FoodPersistence { this:DBModule =>
+trait OrdersPersistence extends CustomerPersistence with FoodPersistence {
+  this: DBModule =>
 
-  private class OrderTable(tag:Tag) extends Table[Order](tag,"orders") {
+  class OrderTable(tag: Tag) extends Table[Order](tag, "orders") {
 
     def created = column[Date]("created")
 
@@ -50,9 +51,9 @@ private[domain] trait OrdersPersistence extends CustomerPersistence with FoodPer
 
     def pk = primaryKey("order_pk", (created, customerId, foodItemId))
   }
-  protected val orderTableQuery = TableQuery[OrderTable]
+
+  val orderTableQuery = TableQuery[OrderTable]
 
 }
-object OrdersDao extends OrdersDao with PostgresDBModule //H2DBModule
 
-final case class Order(foodItemQty:Int, created: Date, customerId:Int, foodItemId:Int)
+final case class Order(foodItemQty: Int, created: Date, customerId: Int, foodItemId: Int)

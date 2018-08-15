@@ -12,7 +12,5 @@ object MainController extends App {
 
   val conf = ConfigFactory.load()
 
-  println(conf.getInt("http.port"))
-
   val bindingFuture = Http().bindAndHandle(routes, "0.0.0.0", conf.getInt("http.port"))
 }
