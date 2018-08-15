@@ -22,7 +22,7 @@ object CustomerDao extends CustomerPersistence with PostgresDBModule{
 trait CustomerPersistence {
   this: DBModule =>
 
-  class CustomerTable(tag: Tag) extends Table[Customer](tag, "customer") {
+  class CustomerTable(tag: Tag) extends Table[Customer](tag, "customers") {
     def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
 
     def name = column[String]("name")

@@ -20,7 +20,7 @@ object FoodDao extends FoodPersistence with PostgresDBModule {
 
 trait FoodPersistence { this:DBModule =>
 
-  class FoodTable(tag:Tag) extends Table[FoodItem](tag,"food_item") {
+  class FoodTable(tag:Tag) extends Table[FoodItem](tag,"food_items") {
     def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
 
     def price = column[Int]("price")
